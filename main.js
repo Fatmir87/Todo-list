@@ -1,7 +1,10 @@
+let myArray = [];
+
+$(document).ready(function() {
 
 var myNodelist = document.getElementsByTagName("LI");
 var i;
-let myArray = [];
+
 for (i = 0; i < myNodelist.length; i++) {
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
@@ -25,6 +28,7 @@ for (i = 0; i < close.length; i++) {
 var list = document.querySelector('ul');
 list.addEventListener('click', function(ev) {
   if (ev.target.tagName === 'LI') {
+    console.log();
     ev.target.classList.toggle('checked');
   }
 }, false);
@@ -47,34 +51,56 @@ function newElement() {
   if (inputValue === '' || myArray.includes (inputValue)) {
     alert("You must write something!");
   } else {
-    myArray.push(inputValue);
+    myArray.push([inputValue, false]);
     document.getElementById("myUL").appendChild(li);
-    
+    console.log(inputValue);
   }
+
+  $("#btn_settings").click(
+    function(){
+      $("#myUL").children('li').each(function () {
+        if (this.classList.contains('checked')) {
+          myArray.splice($(this).inputValue);
+        }
+      $(".checked").remove();
+      });
+    });
+  
+  
   document.getElementById("myInput").value = "";
-  $( "#myUL" ).sortable();
+  
   var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
+  var txt = document.createTextNode("");
   span.className = "close";
   span.appendChild(txt);
   li.appendChild(span);
 
-  
-
+  $( "#myUL" ).sortable();
+  var trashItem = function(){
   for (i = 0; i < close.length; i++) {
     close[i].onclick = function() {
       var div = this.parentElement;
       div.style.display = "none";
       
-      
-      //$("#myUL").disableSelection();
-      
+
     }
-  }
+  }};
+
 }
+// Each time this is called (whenever the dom in div is), clear the array and loop through the elements into the array
+$("body").on("DOMSubtreeModified", "div", function(){
 
-/*$( function() {
-$("#myUL").sortable();
-$("#myUL").disableSelection();
+    $(function(){
+      myArray =[];
+      $("li").each(function(){
+          myArray.push($(this).text());
 
-} );*/
+
+      });
+
+
+    });
+});
+
+
+});
